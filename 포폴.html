@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>황수빈 Portfolio | AI Data & Generative AI</title>
+  <style>
+    :root {
+      --kakao: #FEE500;
+      --ink: #1f1f1f;
+      --muted: #666;
+      --line: #e8e3d2;
+      --paper: #fffdf4;
+      --cream: #fff8d9;
+      --soft: #f7f3e8;
+      --accent: #3a3321;
+      --box: #ffffff;
+      --green: #edf7ef;
+      --blue: #eef4ff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      background: #fff;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.86); backdrop-filter: blur(12px);
+      border-bottom: 1px solid #eee;
+    }
+    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-weight: 800; letter-spacing: -.02em; }
+    .logo span { background: var(--kakao); padding: 4px 8px; border-radius: 999px; margin-left: 6px; font-size: 12px; }
+    .navlinks { display: flex; gap: 18px; font-size: 14px; color: #333; }
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(254,229,0,.35), transparent 28%),
+        radial-gradient(circle at 84% 18%, rgba(255,236,105,.28), transparent 26%),
+        linear-gradient(180deg, #fff 0%, #fffdf0 100%);
+      border-bottom: 1px solid #f1ead0;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .85fr);
+      gap: 42px;
+      align-items: center;
+      padding: 80px 0;
+    }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px; border: 1px solid #eadf9a; border-radius: 999px; background: rgba(255,255,255,.7); font-size: 13px; font-weight: 700; }
+    .hero h1 { margin: 20px 0 16px; font-size: clamp(34px, 5vw, 64px); line-height: 1.12; letter-spacing: -.055em; }
+    .hero h1 mark { background: linear-gradient(180deg, transparent 58%, var(--kakao) 0); padding: 0 3px; }
+    .hero p { margin: 0; color: #4d4d4d; font-size: 18px; max-width: 680px; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .btn { padding: 13px 18px; border-radius: 14px; font-weight: 800; border: 1px solid #222; box-shadow: 0 6px 0 #222; transition: .2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #222; }
+    .btn.primary { background: var(--kakao); }
+    .btn.secondary { background: #fff; }
+    .profile-photo-card {
+      width: 100%;
+      min-height: 350px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #f4f4f4;
+      border: 1px solid #eadf9a;
+      box-shadow: 0 20px 70px rgba(0,0,0,.13);
+    }
+    .profile-photo-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    section { padding: 84px 0; }
+    .section-title { margin-bottom: 26px; }
+    .section-title .label { color: #7b6c00; font-weight: 800; font-size: 14px; }
+    .section-title h2 { margin: 6px 0 10px; font-size: clamp(28px, 3.4vw, 44px); letter-spacing: -.045em; }
+    .section-title p { margin: 0; color: var(--muted); }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .summary-card { border: 1px solid #eee; border-radius: 20px; padding: 20px; background: #fff; }
+    .summary-card b { display:block; margin-bottom: 8px; }
+    .summary-card span { color: var(--muted); font-size: 14px; }
+    .project-list { display: grid; gap: 16px; }
+    .project-card {
+      display: grid; grid-template-columns: 1fr 150px 170px 110px; gap: 16px; align-items: center;
+      padding: 20px; border: 1px solid #e8e8e8; border-radius: 22px; background: #fff;
+      transition: .2s; cursor: pointer;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0,0,0,.08); border-color: #d8ca57; }
+    .project-card h3 { margin: 0 0 4px; font-size: 20px; letter-spacing: -.035em; }
+    .project-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: var(--cream); border: 1px solid #eadf9a; font-weight: 800; font-size: 13px; text-align:center; }
+    .open { text-align: center; font-weight: 900; color: #4b4100; }
+    .details { background: var(--paper); border-top: 1px solid #f1ead0; }
+    .detail-card { background: #fff; border: 1px solid var(--line); border-radius: 28px; padding: 30px; margin-top: 22px; box-shadow: 0 8px 22px rgba(0,0,0,.035); }
+    .detail-head { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; border-bottom:1px solid #eee; padding-bottom:18px; margin-bottom:24px; }
+    .detail-head h3 { margin:0; font-size: 28px; letter-spacing: -.04em; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .meta span { background:#f5f5f5; border:1px solid #e9e9e9; border-radius:999px; padding:6px 10px; font-size:13px; font-weight:700; color:#444; }
+    .detail-grid { display:grid; grid-template-columns: .9fr 1.1fr; gap:24px; align-items:start; }
+    .block { border:1px solid #eee; border-radius:20px; padding:20px; background:#fff; }
+    .block h4 { margin:0 0 10px; font-size:16px; }
+    .block p { margin:0; color:#454545; }
+    .result-list { margin:0; padding-left:18px; color:#444; }
+    .result-list li { margin: 5px 0; }
+    .diagram { border:1px solid #eee; border-radius:22px; padding:14px; background:#fffdf8; overflow:auto; }
+    svg { max-width:100%; height:auto; display:block; }
+    .closing { background:#1f1f1f; color:#fff; text-align:center; }
+    .closing h2 { font-size: clamp(26px, 4vw, 46px); line-height:1.25; letter-spacing:-.045em; margin:0 0 16px; }
+    .closing p { margin:0 auto; max-width:760px; color:#e8e8e8; }
+    footer { padding: 28px 0; font-size: 13px; color:#777; border-top:1px solid #eee; }
+    footer .wrap {display: flex;justify-content: center;align-items: center;}
+    .small { font-size: 13px; color:#777; margin-top:10px; }
+    @media (max-width: 900px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-card { grid-template-columns: 1fr; }
+      .open { text-align:left; }
+      .navlinks { display:none; }
+    }
+    @media (max-width: 760px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .profile-photo-card, .profile-photo-card img { min-height: 360px; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 24px, 1120px); }
+      section { padding: 60px 0; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .detail-card { padding: 20px; border-radius: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#home">황수빈 Portfolio</a>
+      <nav class="navlinks">
+        <a href="#about">소개</a>
+        <a href="#projects">프로젝트 보기</a>
+        <a href="#closing">각오</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>직접 해보고,<br><mark>끝까지 확인하는</mark><br>황수빈입니다.</h1>
+          <p>
+            생성형 AI를 활용해보고, 데이터와 결과를 기준에 따라 다시 확인해왔습니다.
+            아직 완벽한 전문가라기보다, 모르는 것을 직접 시도하고 검증하며 성장하는 지원자입니다.
+          </p>
+          <div class="cta">
+            <a class="btn primary" href="#projects">PROJECT</a>
+            <a class="btn secondary" href="#about">ABOUT ME</a>
+          </div>
+        </div>
+        <div class="profile-photo-card">
+          <img src="./profile.jpg">
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-title">
+          <div class="label">ABOUT ME</div>
+          <h2>AI 데이터 업무에 연결되는 저의 강점</h2>
+          <p>프로젝트 경험을 통해 데이터 처리, 결과 검토, 테스트 케이스 기반 검증의 중요성을 배웠습니다.</p>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card"><b>문서 이해와 정리</b><span>회의 내용, 발표 자료, 보고서 흐름을 정리하며 기술 내용을 문장으로 다듬었습니다.</span></div>
+          <div class="summary-card"><b>데이터 검토 습관</b><span>결측치, 변수 선택, 클래스별 성능 차이를 확인하며 결과를 세부적으로 검토했습니다.</span></div>
+          <div class="summary-card"><b>생성형 AI 활용</b><span>AI와 API 문서를 참고해 고양이 검색 웹사이트를 직접 구현했습니다.</span></div>
+          <div class="summary-card"><b>기준 기반 검증</b><span>정상/비정상 케이스를 구성하고 평가 지표로 결과를 다시 확인했습니다.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" style="background:#fafafa;">
+      <div class="wrap">
+        <div class="section-title">
+          <div class="label">PROJECTS</div>
+          <h2>프로젝트 보기</h2>
+          <p>프로젝트명을 누르면 문제의식, 전체 구조, 결과, 배운점을 확인할 수 있습니다.</p>
+        </div>
+        <div class="project-list">
+          <a class="project-card" href="#dementia">
+            <div><h3>치매 진단 AI 모델 개발</h3><p>건강 데이터 기반 치매 발생 가능성 분석</p></div>
+            <span class="pill">2024.03 - 2024.06</span><span class="pill">팀 프로젝트</span><span class="open">상세 보기 →</span>
+          </a>
+          <a class="project-card" href="#iot">
+            <div><h3>AI 기반 IoT 악성코드 탐지</h3><p>PCAP 시퀀스 데이터 기반 GRU/Transformer 비교</p></div>
+            <span class="pill">2025.09 - 2025.12</span><span class="pill">개인 프로젝트</span><span class="open">상세 보기 →</span>
+          </a>
+          <a class="project-card" href="#docker">
+            <div><h3>Docker 기반 AI 모델 이상 요청 탐지 및 차단</h3><p>LLM 프록시 로그 기반 Rule + RandomForest 탐지</p></div>
+            <span class="pill">2025.09 - 2025.12</span><span class="pill">팀 프로젝트</span><span class="open">상세 보기 →</span>
+          </a>
+          <a class="project-card" href="#wipe">
+            <div><h3>Wipe Engine 개인정보 흔적 제거 솔루션</h3><p>공용 PC 사용 후 남는 카카오톡/브라우저/Windows 흔적 제거</p></div>
+            <span class="pill">2025.12</span><span class="pill">팀 프로젝트</span><span class="open">상세 보기 →</span>
+          </a>
+          <a class="project-card" href="#mcp">
+            <div><h3>MCP 서버 취약점 탐지 및 악용 가능성 검증</h3><p>테스트 케이스 기반 정적 분석/실행 검증 비교</p></div>
+            <span class="pill">2026.03 - 2026.05</span><span class="pill">캡스톤/논문</span><span class="open">상세 보기 →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="details">
+      <div class="wrap">
+        <div class="section-title">
+          <div class="label">DETAILS</div>
+          <h2>프로젝트 상세</h2>
+        </div>
+
+        <article id="dementia" class="detail-card">
+          <div class="detail-head">
+            <div><h3>치매 진단 AI 모델 개발</h3><div class="meta"><span>2024.03 - 2024.06</span><span>팀 프로젝트</span><span>역할: 조장 / 데이터 핸들링</span></div></div>
+          </div>
+          <div class="detail-grid">
+            <div class="block"><h4>문제의식</h4><p>고령화로 치매 환자가 증가하면서, 건강 데이터 기반으로 치매 발생 가능성과 관련 요인을 분석할 필요가 있다고 판단했습니다.</p><br><h4>내 역할</h4><p>매주 회의를 열어 진도를 확인하고 역할을 조율했습니다. 데이터 전처리, 결측치 처리, 변수 선택, 스케일링, 데이터 분할 과정을 담당했습니다.</p></div>
+            <div class="diagram"><svg viewBox="0 0 780 520" role="img" aria-label="치매 진단 AI 프로젝트 구조">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3a3321" />
+    </marker>
+    <style>
+      .t{font:700 20px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#1f1f1f}
+      .s{font:600 14px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#555}
+      .b{fill:#fff;stroke:#d9cf93;stroke-width:2}
+      .y{fill:#fff8d9;stroke:#d9cf93;stroke-width:2}
+      .g{fill:#edf7ef;stroke:#b9d8c0;stroke-width:2}
+      .bl{fill:#eef4ff;stroke:#bed0ef;stroke-width:2}
+      .a{stroke:#3a3321;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .small{font:500 12px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#666}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="780" height="520" rx="26" fill="#fffdf8" />
+  <text x="28" y="38" class="t">치매 진단 AI 프로젝트 구조</text>
+  
+  <rect class="y" x="60" y="72" width="170" height="70" rx="18"/><text x="145" y="102" text-anchor="middle" class="s">CSV 건강 데이터</text><text x="145" y="124" text-anchor="middle" class="small">1000명 / 20개 변수</text>
+  <path class="a" d="M230 107 H300"/>
+  <rect class="b" x="300" y="72" width="170" height="70" rx="18"/><text x="385" y="102" text-anchor="middle" class="s">데이터 전처리</text><text x="385" y="124" text-anchor="middle" class="small">결측치 · 변수 선택</text>
+  <path class="a" d="M470 107 H540"/>
+  <rect class="bl" x="540" y="72" width="170" height="70" rx="18"/><text x="625" y="102" text-anchor="middle" class="s">시각화</text><text x="625" y="124" text-anchor="middle" class="small">분포 · 관계 분석</text>
+  <path class="a" d="M625 142 V205"/>
+  <rect class="b" x="540" y="205" width="170" height="70" rx="18"/><text x="625" y="235" text-anchor="middle" class="s">스케일링/분할</text><text x="625" y="257" text-anchor="middle" class="small">Train/Test/Valid</text>
+  <path class="a" d="M540 240 H470"/>
+  <rect class="g" x="300" y="205" width="170" height="70" rx="18"/><text x="385" y="235" text-anchor="middle" class="s">Ridge 회귀</text><text x="385" y="257" text-anchor="middle" class="small">alpha=0.01</text>
+  <path class="a" d="M300 240 H230"/>
+  <rect class="y" x="60" y="205" width="170" height="70" rx="18"/><text x="145" y="235" text-anchor="middle" class="s">성능 평가</text><text x="145" y="257" text-anchor="middle" class="small">R² · MSE · CV</text>
+  <rect class="b" x="220" y="322" width="340" height="54" rx="18"/><text x="390" y="352" text-anchor="middle" class="s">결과 해석 및 한계 정리</text>
+  <path class="a" d="M145 275 C145 330 220 348 220 348"/>
+
+</svg></div>
+          </div>
+          <div class="detail-grid" style="margin-top:18px;">
+            <div class="block"><h4>결과</h4><ul class="result-list"><li>R²: 0.692007</li><li>Adjusted R²: 0.679107</li><li>MSE: 0.1</li><li>교차검증 R²: 약 0.7</li></ul></div>
+            <div class="block"><h4>배운점</h4><p>데이터의 미세한 변화가 모델 결과에 영향을 줄 수 있다는 점을 배웠습니다. 특히 결측치 처리, 변수 선택, 데이터 분할처럼 기본 과정이 정확해야 결과를 신뢰할 수 있다는 것을 경험했습니다.</p></div>
+          </div>
+        </article>
+
+        <article id="iot" class="detail-card">
+          <div class="detail-head">
+            <div><h3>AI 기반 IoT 악성코드 탐지</h3><div class="meta"><span>2025.09 - 2025.12</span><span>개인 프로젝트</span><span>역할: 전체 과정 단독 수행</span></div></div>
+          </div>
+          <div class="detail-grid">
+            <div class="block"><h4>문제의식</h4><p>IoT 악성 트래픽은 단일 패킷보다 흐름과 시간적 패턴에서 탐지 단서가 드러날 수 있다고 보고, PCAP 데이터를 시퀀스 형태로 구성해 모델별 탐지 성능을 비교했습니다.</p><br><h4>내 역할</h4><p>PCAP 특징 추출, Flow 단위 그룹화, Sliding Window 적용, 수치형/범주형 데이터 전처리, GRU와 Transformer 모델 학습 및 성능 비교를 모두 수행했습니다.</p></div>
+            <div class="diagram"><svg viewBox="0 0 780 500" role="img" aria-label="IoT 악성코드 탐지 데이터 파이프라인">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3a3321" />
+    </marker>
+    <style>
+      .t{font:700 20px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#1f1f1f}
+      .s{font:600 14px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#555}
+      .b{fill:#fff;stroke:#d9cf93;stroke-width:2}
+      .y{fill:#fff8d9;stroke:#d9cf93;stroke-width:2}
+      .g{fill:#edf7ef;stroke:#b9d8c0;stroke-width:2}
+      .bl{fill:#eef4ff;stroke:#bed0ef;stroke-width:2}
+      .a{stroke:#3a3321;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .small{font:500 12px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#666}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="780" height="500" rx="26" fill="#fffdf8" />
+  <text x="28" y="38" class="t">IoT 악성코드 탐지 데이터 파이프라인</text>
+  
+  <rect class="y" x="285" y="64" width="210" height="62" rx="18"/><text x="390" y="91" text-anchor="middle" class="s">원본 packet feature</text><text x="390" y="112" text-anchor="middle" class="small">Length, IAT, Flags, Protocol, Port</text>
+  <path class="a" d="M350 126 C260 155 205 170 168 188"/><path class="a" d="M430 126 C520 155 575 170 612 188"/>
+  <rect class="bl" x="68" y="188" width="200" height="70" rx="18"/><text x="168" y="217" text-anchor="middle" class="s">수치형 데이터</text><text x="168" y="239" text-anchor="middle" class="small">Length, IAT, Flags</text>
+  <rect class="bl" x="512" y="188" width="200" height="70" rx="18"/><text x="612" y="217" text-anchor="middle" class="s">범주형 데이터</text><text x="612" y="239" text-anchor="middle" class="small">Protocol, Port</text>
+  <path class="a" d="M168 258 V308"/><path class="a" d="M612 258 V308"/>
+  <rect class="g" x="68" y="308" width="200" height="70" rx="18"/><text x="168" y="337" text-anchor="middle" class="s">StandardScaler</text><text x="168" y="359" text-anchor="middle" class="small">Normalization</text>
+  <rect class="g" x="512" y="308" width="200" height="70" rx="18"/><text x="612" y="331" text-anchor="middle" class="s">Label / One-Hot</text><text x="612" y="353" text-anchor="middle" class="small">Embedding Layer</text>
+  <path class="a" d="M268 345 C330 372 345 381 390 390"/><path class="a" d="M512 345 C450 372 435 381 390 390"/>
+  <rect class="y" x="285" y="392" width="210" height="62" rx="18"/><text x="390" y="419" text-anchor="middle" class="s">최종 데이터</text><text x="390" y="441" text-anchor="middle" class="small">batch, 15, 5</text>
+
+</svg></div>
+          </div>
+          <div class="detail-grid" style="margin-top:18px;">
+            <div class="block"><h4>결과</h4><ul class="result-list"><li>GRU: Binary Accuracy 0.9626, Multi Accuracy 0.9470</li><li>Transformer 2-layer: Binary Accuracy 0.9875, Multi Accuracy 0.7944</li><li>Transformer 12-layer: Binary Accuracy 0.9813, Multi Accuracy 0.9595</li><li>최종 비교 F1: GRU Multi 0.945, Transformer 12-layer Multi 0.95</li></ul></div>
+            <div class="block"><h4>배운점</h4><p>전체 정확도만으로 모델을 판단하면 부족하다는 점을 배웠습니다. 특정 클래스의 성능 저하를 확인하고, 데이터 불균형을 완화하기 위해 클래스 가중치, 오버샘플링, Focal Loss를 적용했습니다.</p></div>
+          </div>
+        </article>
+
+        <article id="docker" class="detail-card">
+          <div class="detail-head">
+            <div><h3>Docker 기반 AI 모델 이상 요청 탐지 및 차단</h3><div class="meta"><span>2025.09 - 2025.12</span><span>팀 프로젝트</span><span>역할: 로그 기반 탐지 구조 구현 및 검증</span></div></div>
+          </div>
+          <div class="detail-grid">
+            <div class="block"><h4>문제의식</h4><p>LLM 서비스는 Prompt Injection, Command Injection, Information Leak과 같은 입력 기반 공격에 노출될 수 있습니다. 정적 Rule만으로는 우회형 요청 탐지에 한계가 있어 로그 기반 ML 탐지를 결합했습니다.</p><br><h4>내 역할</h4><p>Llama 모델을 Docker 환경에서 실행하고, 정상/악성 요청 시드 기반 로그를 수집했습니다. proxy_access.log를 5초 단위로 집계해 특징을 만들고 RandomForest 탐지를 적용했습니다.</p></div>
+            <div class="diagram"><svg viewBox="0 0 780 430" role="img" aria-label="Docker 기반 LLM 이상 요청 탐지 구조">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3a3321" />
+    </marker>
+    <style>
+      .t{font:700 20px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#1f1f1f}
+      .s{font:600 14px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#555}
+      .b{fill:#fff;stroke:#d9cf93;stroke-width:2}
+      .y{fill:#fff8d9;stroke:#d9cf93;stroke-width:2}
+      .g{fill:#edf7ef;stroke:#b9d8c0;stroke-width:2}
+      .bl{fill:#eef4ff;stroke:#bed0ef;stroke-width:2}
+      .a{stroke:#3a3321;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .small{font:500 12px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#666}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="780" height="430" rx="26" fill="#fffdf8" />
+  <text x="28" y="38" class="t">Docker 기반 LLM 이상 요청 탐지 구조</text>
+  
+  <rect class="bl" x="40" y="84" width="210" height="76" rx="18"/><text x="145" y="112" text-anchor="middle" class="s">Seed-based</text><text x="145" y="132" text-anchor="middle" class="s">Request Generator</text><text x="145" y="151" text-anchor="middle" class="small">정상/공격 트래픽 생성</text>
+  <rect class="bl" x="285" y="84" width="210" height="76" rx="18"/><text x="390" y="116" text-anchor="middle" class="s">Model Server</text><text x="390" y="140" text-anchor="middle" class="small">Llama 3.2 1B 요청 처리</text>
+  <rect class="bl" x="530" y="84" width="210" height="76" rx="18"/><text x="635" y="116" text-anchor="middle" class="s">Trainer</text><text x="635" y="140" text-anchor="middle" class="small">RandomForest 학습</text>
+  <path class="a" d="M145 160 V220 H305"/><path class="a" d="M390 160 V220 H390"/><path class="a" d="M635 160 V220 H475"/>
+  <rect class="y" x="220" y="220" width="190" height="78" rx="18"/><text x="315" y="252" text-anchor="middle" class="s">Proxy</text><text x="315" y="275" text-anchor="middle" class="small">텍스트·상태·빈도 기반 탐지/차단</text>
+  <rect class="g" x="470" y="220" width="190" height="78" rx="18"/><text x="565" y="252" text-anchor="middle" class="s">Collector</text><text x="565" y="275" text-anchor="middle" class="small">proxy_access.log 5s 통계화</text>
+  <path class="a" d="M410 258 H470"/><path class="a" d="M565 220 V180 H635"/>
+  <rect class="b" x="260" y="344" width="260" height="54" rx="18"/><text x="390" y="375" text-anchor="middle" class="s">Rule + RandomForest 차단</text>
+  <path class="a" d="M315 298 C330 330 350 344 390 344"/>
+
+</svg></div>
+          </div>
+          <div class="detail-grid" style="margin-top:18px;">
+            <div class="block"><h4>결과</h4><ul class="result-list"><li>Request Generator: benign 100개, malicious 100개 시드 사용</li><li>수집 로그: 총 700개</li><li>학습 데이터: 약 680개 로그</li><li>Accuracy: 약 85%</li><li>F1-score: 0.79</li><li>악성 요청 차단 시 403 반환</li></ul></div>
+            <div class="block"><h4>배운점</h4><p>프롬프트와 응답을 단순 문장으로 보지 않고, 요청의 의도와 패턴을 함께 확인해야 한다는 점을 배웠습니다. 또한 Rule 기반 탐지와 ML 기반 탐지를 결합하면 우회형 공격 대응 가능성을 높일 수 있음을 확인했습니다.</p></div>
+          </div>
+        </article>
+
+        <article id="wipe" class="detail-card">
+          <div class="detail-head">
+            <div><h3>Wipe Engine 개인정보 흔적 제거 솔루션</h3><div class="meta"><span>2025.12</span><span>팀 프로젝트</span><span>역할: 카카오톡 아티팩트 분석 및 삭제 기능</span></div></div>
+          </div>
+          <div class="detail-grid">
+            <div class="block"><h4>문제의식</h4><p>공용 PC에서 브라우저나 메신저 사용 후 로그아웃하지 않거나 파일을 삭제하지 않으면, 다음 사용자가 이전 사용자의 자동 로그인 정보와 사용 흔적에 접근할 수 있습니다.</p><br><h4>내 역할</h4><p>카카오톡의 로컬 로그인 정보, 사용자 데이터, 다운로드 파일, 캐시 및 프로필 관련 데이터가 남는 구조를 분석하고 삭제 흐름을 정리했습니다.</p></div>
+            <div class="diagram"><svg viewBox="0 0 780 540" role="img" aria-label="Wipe Engine 카카오톡 아티팩트 삭제 흐름">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3a3321" />
+    </marker>
+    <style>
+      .t{font:700 20px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#1f1f1f}
+      .s{font:600 14px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#555}
+      .b{fill:#fff;stroke:#d9cf93;stroke-width:2}
+      .y{fill:#fff8d9;stroke:#d9cf93;stroke-width:2}
+      .g{fill:#edf7ef;stroke:#b9d8c0;stroke-width:2}
+      .bl{fill:#eef4ff;stroke:#bed0ef;stroke-width:2}
+      .a{stroke:#3a3321;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .small{font:500 12px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#666}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="780" height="540" rx="26" fill="#fffdf8" />
+  <text x="28" y="38" class="t">Wipe Engine 카카오톡 아티팩트 삭제 흐름</text>
+  
+  <rect class="y" x="285" y="60" width="210" height="58" rx="18"/><text x="390" y="95" text-anchor="middle" class="s">카카오톡 실행 여부 확인</text>
+  <path class="a" d="M390 118 V168"/>
+  <rect class="bl" x="285" y="168" width="210" height="58" rx="18"/><text x="390" y="203" text-anchor="middle" class="s">kakaotalk.exe 종료</text>
+  <path class="a" d="M390 226 V270"/>
+  <rect class="b" x="55" y="270" width="190" height="64" rx="18"/><text x="150" y="298" text-anchor="middle" class="s">사용자 데이터 경로 설정</text><text x="150" y="318" text-anchor="middle" class="small">삭제 대상 파일 수집</text>
+  <rect class="b" x="295" y="270" width="190" height="64" rx="18"/><text x="390" y="298" text-anchor="middle" class="s">파일 잠금 여부 확인</text><text x="390" y="318" text-anchor="middle" class="small">잠금 해제 시도</text>
+  <rect class="b" x="535" y="270" width="190" height="64" rx="18"/><text x="630" y="298" text-anchor="middle" class="s">재부팅 시 삭제 예약</text><text x="630" y="318" text-anchor="middle" class="small">MoveFileExW</text>
+  <path class="a" d="M285 197 H150 V270"/><path class="a" d="M245 302 H295"/><path class="a" d="M485 302 H535"/>
+  <path class="a" d="M390 334 V370"/>
+  <rect class="g" x="250" y="370" width="
+  " height="58" rx="18"/><text x="390" y="394" text-anchor="middle" class="s">데이터 무효화 및 덮어쓰기 후 삭제</text><text x="390" y="414" text-anchor="middle" class="small">로그인 파일 · DB · 캐시</text>
+  <path class="a" d="M390 428 V455"/>
+  <rect class="y" x="325" y="455" width="130" height="46" rx="18"/><text x="390" y="484" text-anchor="middle" class="s">종료</text>
+
+</svg></div>
+          </div>
+          <div class="detail-grid" style="margin-top:18px;">
+            <div class="block"><h4>결과</h4><ul class="result-list"><li>Chrome, KakaoTalk, Windows 3개 영역 제거 기능 구현</li><li>KakaoTalk: 로그인 정보, 받은 파일, 채팅 기록 및 프로필 정보 3개 범주 정리</li><li>login_list.dat, last_pc_login.dat 사용자 ID값 무효화 흐름 설계</li><li>chatLog, talkuserdb 등 캐시/DB 관련 파일 덮어쓰기 후 삭제 흐름 정리</li></ul><p class="small">정량 성능지표가 아닌 기능 구현 및 제거 결과 중심 프로젝트입니다.</p></div>
+            <div class="block"><h4>배운점</h4><p>단순 파일 삭제와 개인정보 흔적 제거는 다르다는 점을 배웠습니다. 사용자가 인식하지 못하는 시스템/앱 아티팩트를 분석하고, 실제 사용자의 행동 패턴을 고려해 기능을 설계하는 경험을 했습니다.</p></div>
+          </div>
+        </article>
+
+        <article id="mcp" class="detail-card">
+          <div class="detail-head">
+            <div><h3>MCP 서버 취약점 탐지 및 악용 가능성 검증</h3><div class="meta"><span>2026.03 - 2026.05</span><span>캡스톤/논문 프로젝트</span><span>역할: 테스트 케이스 구성 및 실험 수행</span></div></div>
+          </div>
+          <div class="detail-grid">
+            <div class="block"><h4>문제의식</h4><p>정적 분석은 취약점 후보를 찾을 수 있지만, 실제 MCP 호출 과정에서 악용 가능한지까지 판단하기 어렵습니다. 이를 보완하기 위해 실행 기반 검증을 결합했습니다.</p><br><h4>내 역할</h4><p>Filesystem, Git, Memory 서버를 대상으로 positive 30개와 negative 30개 테스트 케이스를 구성하고, 정적 분석과 하이브리드 분석 결과를 비교했습니다.</p></div>
+            <div class="diagram"><svg viewBox="0 0 780 470" role="img" aria-label="MCP 정적 분석 + 실행 검증 파이프라인">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3a3321" />
+    </marker>
+    <style>
+      .t{font:700 20px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#1f1f1f}
+      .s{font:600 14px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#555}
+      .b{fill:#fff;stroke:#d9cf93;stroke-width:2}
+      .y{fill:#fff8d9;stroke:#d9cf93;stroke-width:2}
+      .g{fill:#edf7ef;stroke:#b9d8c0;stroke-width:2}
+      .bl{fill:#eef4ff;stroke:#bed0ef;stroke-width:2}
+      .a{stroke:#3a3321;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .small{font:500 12px -apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif; fill:#666}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="780" height="470" rx="26" fill="#fffdf8" />
+  <text x="28" y="38" class="t">MCP 정적 분석 + 실행 검증 파이프라인</text>
+  
+  <rect class="y" x="55" y="82" width="160" height="72" rx="18"/><text x="135" y="112" text-anchor="middle" class="s">User Commands</text><text x="135" y="134" text-anchor="middle" class="small">scan quick / deep</text>
+  <path class="a" d="M215 118 H275"/>
+  <rect class="bl" x="275" y="72" width="240" height="92" rx="18"/><text x="395" y="103" text-anchor="middle" class="s">Phase 1. Static Analysis</text><text x="395" y="127" text-anchor="middle" class="small">AST & Pattern Matching</text><text x="395" y="146" text-anchor="middle" class="small">Candidate Detection</text>
+  <path class="a" d="M515 118 H575"/>
+  <rect class="g" x="575" y="72" width="150" height="92" rx="18"/><text x="650" y="113" text-anchor="middle" class="s">WARN</text><text x="650" y="136" text-anchor="middle" class="small">취약점 후보</text>
+  <path class="a" d="M395 164 V220"/>
+  <rect class="bl" x="275" y="220" width="240" height="102" rx="18"/><text x="395" y="250" text-anchor="middle" class="s">Phase 2. Execution Verification</text><text x="395" y="274" text-anchor="middle" class="small">MCP Call Flow</text><text x="395" y="293" text-anchor="middle" class="small">Input Generation · Result Comparison</text>
+  <path class="a" d="M350 322 C305 350 280 360 250 372"/><path class="a" d="M440 322 C485 350 510 360 540 372"/>
+  <rect class="g" x="110" y="372" width="210" height="54" rx="18"/><text x="215" y="405" text-anchor="middle" class="s">PASS: No Exploit</text>
+  <rect class="y" x="470" y="372" width="210" height="54" rx="18"/><text x="575" y="405" text-anchor="middle" class="s">BLOCK: Exploit Confirmed</text>
+  <path class="a" d="M320 399 H470"/>
+
+</svg></div>
+          </div>
+          <div class="detail-grid" style="margin-top:18px;">
+            <div class="block"><h4>결과</h4><ul class="result-list"><li>평가 데이터셋: positive 30개 + negative 30개 = 총 60개</li><li>정적 분석: TP 22, FP 20, FN 8</li><li>정적 분석 Precision 0.524, Recall 0.733, F1 0.611</li><li>하이브리드 분석: Static Findings 42건 중 Confirmed 29건</li><li>하이브리드 Precision 0.690</li></ul></div>
+            <div class="block"><h4>배운점</h4><p>탐지 결과를 그대로 신뢰하지 않고, 기준과 근거를 바탕으로 다시 확인하는 과정이 중요하다는 것을 배웠습니다. 테스트 케이스와 평가 지표는 결과 품질을 설명하는 핵심 근거가 된다는 점을 경험했습니다.</p></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="closing" class="closing">
+      <div class="wrap">
+        <h2>처음부터 완벽하진 않아도,<br>열심히 배우며 성장하겠습니다.</h2>
+        <p>
+          AI 데이터 구축 업무는 서비스 품질을 만드는 기초 작업이라고 생각합니다.
+          제가 쌓아온 데이터 처리 경험과 생성형 AI 활용 경험을 바탕으로, 주어진 기준을 꼼꼼하게 적용하고 안정적으로 업무를 수행하겠습니다.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© 2026 Hwang Subin Portfolio</div>
+  </footer>
+</body>
+</html>
